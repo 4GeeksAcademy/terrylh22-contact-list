@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
-export const NewContact = () => {
+export const UpdateContact = () => {
+  const { id } = useParams();
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ export const NewContact = () => {
       address: address,
       phone: phoneNumber,
     };
-    actions.addContact(contact);
+    actions.updateContact(id, contact);
     setFullName("");
     setPhoneNumber("");
     setAddress("");
@@ -30,10 +31,26 @@ export const NewContact = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    const fetchContact = async () => {
+      try {
+        const contact = await actions.fetchThisContact(id);
+        console.log("Contact data:", contact);
+        setFullName(contact.full_name);
+        setPhoneNumber(contact.phone);
+        setAddress(contact.address);
+        setEmail(contact.email);
+      } catch (error) {
+        console.error("Error fetching contact:", error);
+      }
+    };
+    fetchContact();
+  }, []);
+
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-between mt-3 mb-3">
-        <h1>Create New Contact</h1>
+        <h1>Update Contact</h1>
         <Link to="/">
           <button className="btn btn-primary mb-2 mt-2">Back home</button>
         </Link>
@@ -92,7 +109,7 @@ export const NewContact = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary mt-3">
-          Create Contact
+          Update Contact
         </button>
       </form>
     </div>

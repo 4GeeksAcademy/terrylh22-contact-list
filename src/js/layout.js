@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Home } from "./views/home";
 import { NewContact } from "./views/newcontact";
+import { UpdateContact } from "./views/updateContact";
 import injectContext from "./store/appContext";
 
 //create your first component
@@ -15,8 +16,9 @@ const Layout = () => {
     <div>
       <BrowserRouter basename={basename}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path={basename} element={<Home />} />
           <Route path="/new-contact" element={<NewContact />} />
+          <Route path="/update-contact/:id" element={<UpdateContact />} />
         </Routes>
       </BrowserRouter>
     </div>
